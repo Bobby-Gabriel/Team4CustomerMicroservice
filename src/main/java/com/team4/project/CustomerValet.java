@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class CustomerMongoService implements CustomerService {
+public class CustomerValet implements CustomerService {
 
 	@Autowired
-	CustomerMongoRepository repo;
+	CustomerRepository repo;
 	
 	@Override
 	public Iterable<Customer> getCustomers() {
@@ -18,20 +18,20 @@ public class CustomerMongoService implements CustomerService {
 	}
 
 	@Override
-	public Optional<Customer> getCustomerById(String id) {
+	public Optional<Customer> getCustomerById(long id) {
 		return repo.findById(id);
 	}
 
 	
 	@Override
-	public void deleteCustomerById(String id) {
+	public void deleteCustomerById(long id) {
 		repo.deleteById(id);
 		
 	}
 
 	@Override
-	public void addCustomer(Customer c) {
-		repo.save(c);
+	public Customer addCustomer(Customer c) {
+		return repo.save(c);
 	}
 
 	@Override

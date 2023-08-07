@@ -6,15 +6,15 @@ public interface CustomerService {
 
 	Iterable<Customer> getCustomers();
 
-	Optional<Customer> getCustomerById(String id);
+	Optional<Customer> getCustomerById(long id);
 	
-	void addCustomer(Customer c);
+	Customer addCustomer(Customer c);
 	
 	Customer getCustomerByName(String name);
 	
 	void updateCustomer(Customer c);
 
-	void deleteCustomerById(String id);
+	void deleteCustomerById(long id);
 
 }
 

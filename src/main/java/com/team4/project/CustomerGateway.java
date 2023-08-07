@@ -3,9 +3,12 @@ package com.team4.project;
 import java.net.URI;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.util.UriComponentsBuilder;
 
 
 @CrossOrigin
@@ -42,7 +44,7 @@ public class CustomerGateway {
 	
 	// GET a customer by their place in the list
 	@GetMapping("/{id}")
-	public Optional<Customer> getOneSingleCustomer(@PathVariable String id, HttpServletResponse response) {
+	public Optional<Customer> getOneSingleCustomer(@PathVariable long id, HttpServletResponse response) {
 		
 		response.setStatus(HttpServletResponse.SC_OK);
 		return customerService.getCustomerById(id);
@@ -53,13 +55,14 @@ public class CustomerGateway {
 	// Not passing in any ID at the moment, will not work
 	// POST a new customer to the list
 	@PostMapping(consumes = JSON, produces = JSON)
-	public ResponseEntity<?> addCustomer(@RequestBody Customer c, HttpServletResponse response, UriComponentsBuilder uri) {
-		customerService.addCustomer(c);
+	public ResponseEntity<?> addCustomer(@RequestBody Customer c, HttpServletResponse response) {
+		Customer postedCustomer = customerService.addCustomer(c);
 		
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(c.getId()).toUri();
-		ResponseEntity<?> responseEntity = ResponseEntity.created(location).build();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setLocation(location);
 		
-		return responseEntity;
+		return new ResponseEntity<>(postedCustomer, headers, HttpStatus.OK);
 		
 	}
 	
@@ -86,21 +89,22 @@ public class CustomerGateway {
 	
 	
 	@PutMapping("/{customerId}")
-	public ResponseEntity<?> putCustomer(@RequestBody Customer newCustomer, @PathVariable String customerId) {
-		if (!(newCustomer.getId().equals(customerId))) {
+	public ResponseEntity<?> putCustomer(@RequestBody Customer newCustomer, @PathVariable long customerId) {
+		if (newCustomer.getId() != customerId) {
 			return ResponseEntity.badRequest().build();
 		}
 		customerService.updateCustomer(newCustomer);
 		
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newCustomer.getId()).toUri();
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
 		ResponseEntity<?> responseEntity = ResponseEntity.created(location).build();
+		
 		return responseEntity;
 	}
 	
 
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteCustomer(@PathVariable String id){
+	public ResponseEntity<?> deleteCustomer(@PathVariable long id){
 	    
 		customerService.deleteCustomerById(id);
 		return ResponseEntity.ok().build();
