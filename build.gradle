@@ -17,7 +17,7 @@ group = 'CustomerMicroservice'
 
 description = "Used for all customers"
 
-mainClassName = "com.team4.customres"
+mainClassName = "com.team4.project.App"
 
 
 sourceCompatibility = 11
