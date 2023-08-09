@@ -1,5 +1,6 @@
 package com.team4.project;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,11 @@ public class CustomerValet implements CustomerService {
 
 	@Override
 	public Customer getCustomerByName(String name) {
-		return repo.findByName(name).get(0);
+		List<Customer> customer = repo.findByName(name);
+		if (customer.isEmpty()) {
+			return null;
+		}
+		return customer.get(0);
 	   
 	}
 

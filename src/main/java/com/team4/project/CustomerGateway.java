@@ -62,7 +62,7 @@ public class CustomerGateway {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(location);
 		
-		return new ResponseEntity<>(postedCustomer, headers, HttpStatus.OK);
+		return new ResponseEntity<>(postedCustomer, headers, HttpStatus.CREATED);
 		
 	}
 	
