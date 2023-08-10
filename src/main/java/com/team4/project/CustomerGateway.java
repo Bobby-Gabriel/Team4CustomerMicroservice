@@ -3,7 +3,6 @@ package com.team4.project;
 import java.net.URI;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +47,6 @@ public class CustomerGateway {
 		
 		response.setStatus(HttpServletResponse.SC_OK);
 		return customerService.getCustomerById(id);
-		
 	}
 	
 	
@@ -63,7 +61,6 @@ public class CustomerGateway {
 		headers.setLocation(location);
 		
 		return new ResponseEntity<>(postedCustomer, headers, HttpStatus.CREATED);
-		
 	}
 	
 	
@@ -74,7 +71,6 @@ public class CustomerGateway {
 			
 		response.setStatus(HttpServletResponse.SC_OK);
 		return customerService.getCustomerByName(username);
-	
 	}
 	
 	
@@ -96,9 +92,8 @@ public class CustomerGateway {
 		customerService.updateCustomer(newCustomer);
 		
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-		ResponseEntity<?> responseEntity = ResponseEntity.created(location).build();
-		
-		return responseEntity;
+
+		return ResponseEntity.created(location).build();
 	}
 	
 

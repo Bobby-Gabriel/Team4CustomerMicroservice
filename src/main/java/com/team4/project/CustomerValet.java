@@ -27,7 +27,6 @@ public class CustomerValet implements CustomerService {
 	@Override
 	public void deleteCustomerById(long id) {
 		repo.deleteById(id);
-		
 	}
 
 	@Override
