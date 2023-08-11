@@ -81,8 +81,11 @@ public class MockCustomerService implements CustomerService {
 			Customer customer = customers.get(i);
 			if (customer.getId() == c.getId()) {
 				customers.set(i, c);
+				return;
 			}
 		}
+		
+		addCustomer(c);
 		
 	}
 
